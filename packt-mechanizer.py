@@ -21,12 +21,25 @@ def login(browser, email, password):
     # print password_control.value
     browser.submit()
 
+def claim(browser):
+    # for link in browser.links():
+    #     print link.url
+    for link in browser.links():
+        if "claim" in link.url:
+            claim_link = link
+            break
+    # print claim_link.url
+    res = browser.follow_link(claim_link)
+    # print res.read()
+
+
 def main():
     email, password = get_login_info()
     br = mechanize.Browser()
     url = "https://www.packtpub.com/packt/offers/free-learning"
     br.open(url)
     login(br, email, password)
+    claim(br)
 
 if __name__ == "__main__":
     main()
