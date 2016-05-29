@@ -32,11 +32,18 @@ def claim(browser):
 
 def main():
     email, password = get_login_info()
+    print "[*] account used: ", email
     br = mechanize.Browser()
     url = "https://www.packtpub.com/packt/offers/free-learning"
     br.open(url)
+    print "[*] logging..."
     login(br, email, password)
-    claim(br)
+    print "[*] claiming book..."
+    try:
+        claim(br)
+        print "[*] succesfully claimed a book!"
+    except:
+        print "[*] claiming error, probably login details are wrong"
 
 
 if __name__ == "__main__":
