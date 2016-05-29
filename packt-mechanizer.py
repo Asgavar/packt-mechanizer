@@ -2,6 +2,7 @@
 
 import mechanize
 import json
+import re
 
 
 def get_login_info():
@@ -30,6 +31,13 @@ def claim(browser):
     res = browser.follow_link(claim_link)
 
 
+def get_title(browser):
+    response = browser.open("https://www.packtpub.com/packt/offers/free-learning")
+    data = response.read()
+    title = re.findall(r'<h2>(.*?)</h2>', data, re.DOTALL)[0].translate(None, '\n\t\r')
+    return title
+
+
 def main():
     email, password = get_login_info()
     print "[*] account used: ", email
@@ -39,9 +47,11 @@ def main():
     print "[*] logging..."
     login(br, email, password)
     print "[*] claiming book..."
+    title = get_title(br)
     try:
         claim(br)
         print "[*] succesfully claimed a book!"
+        print "[*] book title: ", title
     except:
         print "[*] claiming error, probably login details are wrong"
 
